@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Admins {
+  AdminId      Int      @id(map: "PK_Admins") @default(autoincrement())
+  Username     String   @db.NVarChar(50)
+  PasswordHash String   @db.NVarChar(255)
+  FullName     String   @db.NVarChar(100)
+  Email        String   @db.NVarChar(100)
+  IsActive     Boolean  @default(true, map: "DF_Admins_IsActive")
+  CreatedAt    DateTime @default(now(), map: "DF_Admins_CreatedAt") @db.DateTime
+}
+
+model Categories {
+  CategoryId   Int        @id(map: "PK_Categories") @default(autoincrement())
+  CategoryName String     @db.NVarChar(100)
+  Description  String?    @db.NVarChar(255)
+  IsActive     Boolean    @default(true, map: "DF_Categories_IsActive")
+  Products     Products[]
+}
+
+model Contacts {
+  ContactId Int      @id(map: "PK_Contacts") @default(autoincrement())
+  FullName  String   @db.NVarChar(100)
+  Phone     String   @db.NVarChar(20)
+  Email     String   @db.NVarChar(100)
+  Message   String?  @default("getdate()", map: "DF_Contacts_Message") @db.NVarChar(Max)
+  CreatedAt DateTime @db.DateTime
+}
+
+model ProductImages {
+  ImageId   Int     @id(map: "PK_ProductImages") @default(autoincrement())
+  ProductId Int
+  ImageUrl  String  @db.NVarChar(255)
+  IsPrimary Boolean @default(false, map: "DF_ProductImages_IsPrimary")
+}
+
+model Products {
+  ProductId   Int        @id(map: "PK_Products") @default(autoincrement())
+  ProductName String     @db.NVarChar(150)
+  CategoryId  Int
+  Price       Decimal    @db.Decimal(18, 2)
+  Material    String     @db.NVarChar(100)
+  Color       String     @db.NVarChar(50)
+  Size        String     @db.NVarChar(50)
+  Description String?    @db.NVarChar(Max)
+  IsFeatured  Boolean    @default(false, map: "DF_Products_IsFeatured")
+  IsActive    Boolean    @default(true, map: "DF_Products_IsActive")
+  CreatedAt   DateTime   @default(now(), map: "DF_Products_CreatedAt") @db.DateTime
+  Categories  Categories @relation(fields: [CategoryId], references: [CategoryId], onUpdate: NoAction, map: "FK_Products_Categories")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B61459AD513") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}

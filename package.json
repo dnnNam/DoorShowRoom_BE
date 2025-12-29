@@ -17,7 +17,8 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.6",
-    "@types/node": "^24.10.2",
+    "@types/mssql": "^9.1.8",
+    "@types/node": "^24.10.4",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^9.39.1",
@@ -25,6 +26,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "nodemon": "^3.1.11",
     "prettier": "^3.7.4",
+    "prisma": "^6.19.1",
     "rimraf": "^6.1.2",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
@@ -32,6 +34,9 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "@prisma/adapter-mssql": "^7.2.0",
+    "@prisma/client": "^6.19.1",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1"
   }
 }
