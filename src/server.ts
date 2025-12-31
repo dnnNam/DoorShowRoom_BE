@@ -23,10 +23,10 @@ const swaggerOptions = {
 }
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use(express.json())
 
-app.use('/products', productRouter)
+app.use('/', productRouter)
 
 app.listen(PORT, () => {
   console.log(`server bắt đầu trên cổng ${PORT}`)

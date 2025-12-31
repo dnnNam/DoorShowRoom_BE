@@ -1,12 +1,15 @@
 import 'dotenv/config'
 import { PrismaMssql } from '@prisma/adapter-mssql'
 import { PrismaClient } from '../../generated/prisma/client'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const sqlConfig = {
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  server: process.env.HOST!,
+  server: process.env.DB_HOST!,
+  port: parseInt(process.env.DB_PORT || '1433'),
   pool: {
     max: 10,
     min: 0,
@@ -14,7 +17,7 @@ const sqlConfig = {
   },
   options: {
     encrypt: true, // for azure
-    trustServerCertificate: false // change to true for local dev / self-signed certs
+    trustServerCertificate: true
   }
 }
 
