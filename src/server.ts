@@ -1,4 +1,4 @@
-import { log } from 'console'
+import cors from 'cors'
 import express from 'express'
 import productRouter from './routes/products.routers'
 import dotenv from 'dotenv'
@@ -22,6 +22,12 @@ const swaggerOptions = {
   apis: ['./src/routes/*.ts']
 }
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000'
+  })
+)
 
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use(express.json())
