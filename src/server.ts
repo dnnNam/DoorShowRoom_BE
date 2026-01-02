@@ -34,6 +34,8 @@ app.use(express.json())
 
 app.use('/', productRouter)
 
+app.use()
+
 app.listen(PORT, () => {
   console.log(`server bắt đầu trên cổng ${PORT}`)
 })
