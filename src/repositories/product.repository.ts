@@ -8,6 +8,11 @@ export const productRepository = {
           where: {
             IsPrimary: true
           }
+        },
+        Categories: {
+          select: {
+            CategoryName: true
+          }
         }
       }
     })
