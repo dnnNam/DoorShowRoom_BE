@@ -4,6 +4,7 @@ import productRouter from './routes/products.routers'
 import dotenv from 'dotenv'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import { defaultErrorHandler } from './middlewares/errors.middlewares'
 dotenv.config()
 
 const PORT = process.env.PORT || 5000
@@ -32,10 +33,9 @@ app.use(
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use(express.json())
 
-app.use('/', productRouter)
+app.use('/products', productRouter)
 
-app.use()
-
+app.use(defaultErrorHandler)
 app.listen(PORT, () => {
   console.log(`server bắt đầu trên cổng ${PORT}`)
 })
