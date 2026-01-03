@@ -1,5 +1,6 @@
 import express from 'express'
 import { getAllProducts } from '~/controllers/products.controllers'
+import { ErrorWithStatus } from '~/model/Errors'
 import { wrapAsync } from '~/utils/handler'
 const productRouter = express.Router()
 /**
@@ -15,6 +16,18 @@ const productRouter = express.Router()
  */
 
 // chức năng lấy tất cả sản phẩm
-productRouter.get('/products', wrapAsync(getAllProducts))
+productRouter.get(
+  '/',
+  // Middleware thử nghiệm lỗi
+  //   (req, res, next) => {
+  //     next(
+  //       new ErrorWithStatus({
+  //         status: 500,
+  //         message: 'TEST API ERROR from middleware 1'
+  //       })
+  //     )
+  //   },
+  wrapAsync(getAllProducts)
+)
 
 export default productRouter
