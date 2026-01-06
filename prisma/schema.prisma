@@ -54,6 +54,7 @@ model Products {
   Description String?    @db.NVarChar(Max)
   IsFeatured  Boolean    @default(false, map: "DF_Products_IsFeatured")
   IsActive    Boolean    @default(true, map: "DF_Products_IsActive")
+  IsBestSeller  Boolean    @default(false)
   CreatedAt   DateTime   @default(now(), map: "DF_Products_CreatedAt") @db.DateTime
   Categories  Categories @relation(fields: [CategoryId], references: [CategoryId], onUpdate: NoAction, map: "FK_Products_Categories")
   ProductImages ProductImages[]
