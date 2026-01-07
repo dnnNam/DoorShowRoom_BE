@@ -9,15 +9,15 @@ class ProductsService {
   }
 
   async filterProducts(filters: ProductFilter) {
-    const { CategoryId, MinPrice, MaxPrice, Material, Size, Color } = filters
+    const { CategoryId, MinPrice, MaxPrice, Materials, Sizes, Colors } = filters
 
     const result = await productRepository.filterProducts({
       CategoryId,
       MinPrice,
       MaxPrice,
-      Material,
-      Size,
-      Color
+      Materials,
+      Sizes,
+      Colors
     })
     return result
   }
