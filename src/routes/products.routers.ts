@@ -1,6 +1,6 @@
 import express from 'express'
 import { getProducts } from '~/controllers/products.controllers'
-import { checkAllowedQueryParams, ProductFilterValidator } from '~/middlewares/product.middlewares'
+import { ProductFilterValidator } from '~/middlewares/product.middlewares'
 import { wrapAsync } from '~/utils/handler'
 const productRouter = express.Router()
 /**
@@ -70,6 +70,6 @@ const productRouter = express.Router()
  *         description: OK
  */
 
-productRouter.get('/', checkAllowedQueryParams, ProductFilterValidator, wrapAsync(getProducts))
+productRouter.get('/', ProductFilterValidator, wrapAsync(getProducts))
 
 export default productRouter

@@ -5,23 +5,7 @@ import { checkSchema } from 'express-validator'
 import HTTP_STATUS from '~/constants/httpStatus'
 import { ErrorWithStatus } from '~/model/Errors'
 import { validate } from '~/utils/validation'
-
-export const checkAllowedQueryParams = (req: Request, res: Response, next: NextFunction) => {
-  const allowedParams = ['CategoryId', 'minPrice', 'maxPrice', 'Materials', 'Sizes', 'Colors']
-  const receivedParams = Object.keys(req.query)
-
-  const invalidParams = receivedParams.filter((param) => !allowedParams.includes(param))
-
-  if (invalidParams.length > 0) {
-    throw new ErrorWithStatus({
-      message: `Invalid query params: ${invalidParams.join(', ')}. Only allowed: ${allowedParams.join(', ')}`,
-      status: HTTP_STATUS.UNPROCESSABLE_ENTITY
-    })
-  }
-
-  next()
-}
-
+const allowedQueryParams = ['CategoryId', 'minPrice', 'maxPrice', 'Materials', 'Sizes', 'Colors']
 export const ProductFilterValidator = validate(
   checkSchema(
     {
@@ -71,7 +55,23 @@ export const ProductFilterValidator = validate(
 
         isString: { errorMessage: 'Color must be a string' }
       },
-      'Colors.*': { isString: true, trim: true }
+      'Colors.*': { isString: true, trim: true },
+
+      _checkUnknownParams: {
+        custom: {
+          options: (_value, meta) => {
+            const req = meta.req
+            const invalid = Object.keys(req.query || {}).filter((key) => !allowedQueryParams.includes(key))
+            if (invalid.length > 0) {
+              throw new ErrorWithStatus({
+                message: `Invalid query params: ${invalid.join(', ')}. Allowed: ${allowedQueryParams.join(', ')}`,
+                status: HTTP_STATUS.UNPROCESSABLE_ENTITY
+              })
+            }
+            return true
+          }
+        }
+      }
     },
     ['query']
   )
