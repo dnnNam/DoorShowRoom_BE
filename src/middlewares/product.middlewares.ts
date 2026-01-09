@@ -11,6 +11,7 @@ export const ProductFilterValidator = validate(
     {
       CategoryId: {
         optional: true,
+
         customSanitizer: {
           options: (value) => {
             if (value && !Array.isArray(value)) {
@@ -37,25 +38,31 @@ export const ProductFilterValidator = validate(
       },
       Materials: {
         optional: true,
-
-        isString: { errorMessage: 'Material must be a string' }
+        customSanitizer: {
+          options: (value) => {
+            if (value && !Array.isArray(value)) {
+              return [value]
+            }
+            return value
+          }
+        }
       },
       'Materials.*': {
         trim: true,
-        isString: true
+        isString: { errorMessage: 'Material must be a string' }
       },
-      Sizes: {
-        optional: true,
-
-        isString: { errorMessage: 'Size must be a string' }
-      },
-      'Sizes.*': { isString: true, trim: true },
       Colors: {
         optional: true,
-
-        isString: { errorMessage: 'Color must be a string' }
+        customSanitizer: {
+          options: (value) => {
+            if (value && !Array.isArray(value)) {
+              return [value]
+            }
+            return value
+          }
+        }
       },
-      'Colors.*': { isString: true, trim: true },
+      'Colors.*': { isString: { errorMessage: 'Color must be a string' }, trim: true },
 
       _checkUnknownParams: {
         custom: {
